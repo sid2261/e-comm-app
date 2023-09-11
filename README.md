@@ -8,3 +8,7 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
 - Whatever are the industry standards we get it from CSS baseline from Material UI.
+- "sx" is used in typography to change the style inherited by material UI and provide your CSS style.
+- "area-label" in IconButton is is used to specify the task that the icon is doing so that visually impared persons can listen what that icon does.
+- In order to use the nested routes we use <Outlet/> component.
+- 
