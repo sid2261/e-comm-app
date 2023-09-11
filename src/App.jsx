@@ -4,11 +4,12 @@ import { createBrowserRouter } from "react-router-dom";
 import { createRoutesFromElements } from "react-router-dom";
 import { Route } from "react-router-dom";
 import { RouterProvider } from "react-router-dom";
+import Layout from './components/Layout';
 
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<h1>This is index route</h1>}></Route>
+    <Route path="/" element={<Layout/>}></Route>
 
   )
 )
