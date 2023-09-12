@@ -2,9 +2,10 @@ import React from 'react'
 import { ThemeProvider, createTheme } from "@mui/material";
 import { CssBaseline } from "@mui/material";
 import Header from './Header';
+import { Outlet } from 'react-router-dom';
 const theme = createTheme({
     palette: {
-        mode: 'light',
+        mode: 'dark',
     },
 
 });
@@ -14,7 +15,9 @@ function Layout() {
     <ThemeProvider theme={theme}>
         <CssBaseline />
         <Header />
-        <main>displaying the content</main>
+        <main>
+          <Outlet/>
+        </main>
         <footer></footer>
     </ThemeProvider>
   );
