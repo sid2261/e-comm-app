@@ -1,3 +1,4 @@
+import { Container } from '@mui/material';
 import React from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react'
@@ -14,9 +15,10 @@ function Home() {
         }
     }, [])
     return (
-        <div>
-            <pre>{JSON.stringify(products, null, 2)}</pre>
-        </div>
+        <Container sx={{py:8}} maxwidth="lg">
+            <grid></grid>
+
+        </Container>
     )
     }
 
