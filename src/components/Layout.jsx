@@ -5,7 +5,7 @@ import Header from './Header';
 import { Outlet } from 'react-router-dom';
 const theme = createTheme({
     palette: {
-        mode: 'dark',
+        mode: 'light',
     },
 
 });
