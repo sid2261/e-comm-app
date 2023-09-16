@@ -11,4 +11,6 @@ Currently, two official plugins are available:
 - "sx" is used in typography to change the style inherited by material UI and provide your CSS style.
 - "area-label" in IconButton is is used to specify the task that the icon is doing so that visually impared persons can listen what that icon does.
 - In order to use the nested routes we use <Outlet/> component.
-- 
+- Web kit is used to clamp or the reduce the text lines.
+- Card property in material UI is used to make cards of the following items.
+- Grid is used to display items in grids
