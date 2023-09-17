@@ -4,10 +4,13 @@ import { Button, Card, CardActions, CardContent, CardMedia, Container, Grid, Ico
 import React from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../feature/cart-slice';
 
 function Home() {
     const theme = useTheme();
     const [products, setProducts] = useState([]);
+    const dispatch = useDispatch();
 
     useEffect(()=>{
         fetchAllProducts()
@@ -17,6 +20,12 @@ function Home() {
             setProducts(result)
         }
     }, [])
+
+    function addProductToCart(product){
+        //dispatch an action
+        dispatch(addToCart({product, quantity:1}));
+    }
+
     return (
         <Container sx={{ py: 8 }} maxWidth="lg">
             <Grid container spacing={4}>
@@ -56,7 +65,7 @@ function Home() {
                             <CardActions sx={{
                                 alignSelf:"center"
                             }}>
-                                <Button variant='contained'>
+                                <Button variant='contained' onClick={()=>addProductToCart(title, id, price, description, rating, image)}>
                                     <ShoppingCartSharp/>
                                     Add to Cart
                                 </Button>
