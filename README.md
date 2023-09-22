@@ -1,5 +1,4 @@
 # React + Vite
-##React 
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
@@ -19,3 +18,4 @@ Currently, two official plugins are available:
 - Whenever we want to dispatch an action such as product to cart we use dispatch function which comes from useDispatch hook coming from React Redux.
 - Redux toolkit under the hood use imer.js which takes care of the state which remains immutable.
 - useSelector is a another hook used in react redux
+- Reducers in redux only work with synchronus operations and the process of filling up the the product is an asynchronus operation so we use the concept of thunk.
