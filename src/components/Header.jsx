@@ -12,6 +12,9 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { fetchAllCategories } from '../feature/category-slice';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Search = styled("section")(({theme})=>({
   position:"relative",
@@ -26,16 +29,24 @@ const Search = styled("section")(({theme})=>({
   width: "100%",
 }));
 function SearchBar(){
-  const products = useSelector((state) => state.products.value);
+  const products = useSelector((state) => state.products?.value);
   const categories = useSelector(state => state.categories?.value);
   const dispatch = useDispatch();
-  const [selectedCategory,setselectedCategory] = useState("all");
+  const [selectedCategory,setselectedCategory] = useState("");
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get("category");
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+      setselectedCategory(category?category:"all");
+  },[category])
+
   if (!categories.length){
     dispatch(fetchAllCategories())
   }
   function handleCategoryChange(event){
     const {value} = event.target;
-    setselectedCategory(value);
+    navigate(value === "all"?"/":`/?category=${value}`);
   }
   return <Search>
     <Select

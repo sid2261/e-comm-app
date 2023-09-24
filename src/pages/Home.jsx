@@ -7,8 +7,11 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../feature/cart-slice';
 import { fetchAllProducts } from '../feature/product-slice';
+import { useSearchParams } from 'react-router-dom';
 
 function Home() {
+    const [searchParams] = useSearchParams();
+    const category = searchParams.get("category");
     const theme = useTheme();
     const state = useSelector(state => state.products);
     const {value:products, loading} = state ?? {};
@@ -23,10 +26,11 @@ function Home() {
         dispatch(addToCart({product, quantity:1}));
     }
 
+    let filteredProducts = category && category !=="all"? products.filter(prod=> prod.category === category):products;
     return (
         <Container sx={{ py: 8 }} maxWidth="lg">
             <Grid container spacing={4}>
-                {products?.map(({title, id, price, description, rating, image}) => (
+                {filteredProducts?.map(({title, id, price, description, rating, image}) => (
                     <Grid item key={id} xs={12} sm={6} md={3}>
                         <Card sx={{height: "100%", display: "flex", flexDirection: "column"}}>
                             <CardMedia component="img" sx={{alignSelf: "center", width:theme.spacing(30), height: theme.spacing(30), objectFit:"contain", pt:theme.spacing()}} 
@@ -38,8 +42,8 @@ function Home() {
                                     overflow:"hidden",
                                     textOverflow:"ellipsis",
                                     display:"-webkit-box",
-                                    "-webkit-line-clamp":"1",
-                                    "-webkit-box-orient":"vertical",
+                                    WebkitLineClamp:"1",
+                                    WebkitBoxOrient:"vertical",
                                 }}>
                                     {title}
                                 </Typography>
@@ -50,8 +54,8 @@ function Home() {
                                     overflow:"hidden",
                                     textOverflow:"ellipsis",
                                     display:"-webkit-box",
-                                    "-webkit-line-clamp":"2",
-                                    "-webkit-box-orient":"vertical",
+                                    WebkitLineClamp:"2",
+                                    WebkitBoxOrient:"vertical",
                                 }}
                                 >{description}</Typography>
                                 <Typography fontSize="large" paragraph >
