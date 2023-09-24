@@ -3,12 +3,15 @@ import AppBar from "@mui/material/AppBar";
 import { Badge, Box, Button, IconButton, Toolbar } from "@mui/material";
 import { Typography } from "@mui/material";
 import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getItemCount } from '../utils';
 import { styled, alpha } from '@mui/material/styles';
 import Autocomplete from "@mui/material/Autocomplete";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import { fetchAllCategories } from '../feature/category-slice';
+import { useState } from 'react';
 
 const Search = styled("section")(({theme})=>({
   position:"relative",
@@ -24,9 +27,41 @@ const Search = styled("section")(({theme})=>({
 }));
 function SearchBar(){
   const products = useSelector((state) => state.products.value);
+  const categories = useSelector(state => state.categories?.value);
+  const dispatch = useDispatch();
+  const [selectedCategory,setselectedCategory] = useState("all");
+  if (!categories.length){
+    dispatch(fetchAllCategories())
+  }
+  function handleCategoryChange(event){
+    const {value} = event.target;
+    setselectedCategory(value);
+  }
   return <Search>
-    <Select size='small'>
-
+    <Select
+    value={selectedCategory}
+    size='small'
+    sx={{
+      m:1,
+      textTransform:"capitalize",
+      "&" : {},
+    }}
+    variant='standard'
+    labelId='selected-category'
+    id='selected-category'
+    onChange={handleCategoryChange}
+    >
+      <MenuItem sx={{
+        textTransform:'capitalize'
+      }}
+      value="all">all</MenuItem>
+      {categories?.map(category => (
+      <MenuItem sx={{
+        textTransform:'capitalize'
+      }}
+      key={category} value={category}>{category}
+      </MenuItem>
+      ))}
     </Select>
       <Autocomplete
         disablePortal
