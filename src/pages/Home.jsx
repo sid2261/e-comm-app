@@ -12,6 +12,7 @@ import { useSearchParams } from 'react-router-dom';
 function Home() {
     const [searchParams] = useSearchParams();
     const category = searchParams.get("category");
+    const searchTerm = searchParams.get("searchterm");
     const theme = useTheme();
     const state = useSelector(state => state.products);
     const {value:products, loading} = state ?? {};
@@ -26,7 +27,13 @@ function Home() {
         dispatch(addToCart({product, quantity:1}));
     }
 
-    let filteredProducts = category && category !=="all"? products.filter(prod=> prod.category === category):products;
+    let filteredProducts = 
+        category && category !=="all"? products.filter((prod)=> prod.category === category):products;
+
+    filteredProducts = searchTerm
+    ? filteredProducts.filter((prod)=> prod.title.toLowerCase().includes(searchTerm.toLowerCase()))
+    :filteredProducts;
+
     return (
         <Container sx={{ py: 8 }} maxWidth="lg">
             <Grid container spacing={4}>

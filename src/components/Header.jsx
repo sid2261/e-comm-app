@@ -15,6 +15,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useTheme } from '@emotion/react';
+import SearchIcon from "@mui/icons-material/Search";
 
 const Search = styled("section")(({theme})=>({
   position:"relative",
@@ -28,13 +30,45 @@ const Search = styled("section")(({theme})=>({
   marginLeft: 0,
   width: "100%",
 }));
+
+const StyleAutocomplete = styled(Autocomplete)(({theme})=>({
+  color:"inherit",
+  width:"100%",
+  "& .MuiTextField-root":{
+    paddingRight:`calc(1em+${theme.spacing(4)})`
+  },
+  "& .MuiInputBase-input":{
+    color: theme.palette.common.white,
+  },
+  "&. MuiOutlinedInput-notchedOutline":{
+    border:"None",
+  },
+  "& .MuiSvgIcon-root":{
+    fill: theme.palette.common.white,
+  }
+}))
+
+const SearchIconWrapper = styled("section")(({theme})=>({
+  padding:theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  right: 0,
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
 function SearchBar(){
+  const theme = useTheme();
   const products = useSelector((state) => state.products?.value);
   const categories = useSelector(state => state.categories?.value);
   const dispatch = useDispatch();
   const [selectedCategory,setselectedCategory] = useState("");
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category");
+  const searchTerm = searchParams.get("searchTerm");
+  const [selectedProduct, setselectedProduct] = useState(null);
   const navigate = useNavigate();
 
   useEffect(()=>{
@@ -46,16 +80,46 @@ function SearchBar(){
   }
   function handleCategoryChange(event){
     const {value} = event.target;
-    navigate(value === "all"?"/":`/?category=${value}`);
+    navigate(value === "all"? "/" :`/?category=${value}${searchTerm ? "&searchterm=" + searchTerm : ""}`);
   }
+
+  function handleSearchChange(searchText){
+    if (searchText){
+      navigate(selectedCategory==="all"
+      ?`?searchTerm=${searchTerm}`
+      :`/?category=${selectedCategory}&searchterm=${searchText}`
+      );
+    }else{
+      navigate(selectedCategory==="all"
+      ?`/`:
+      `/?category=${selectedCategory}`
+      );
+    }
+  }
+
   return <Search>
     <Select
-    value={selectedCategory}
-    size='small'
-    sx={{
-      m:1,
-      textTransform:"capitalize",
-      "&" : {},
+      value={selectedCategory}
+      size='small'
+      sx={{
+        m:1,
+        textTransform:"capitalize",
+        "&" : {
+          "::before":{
+            ":hover":{
+              border:"none",
+            },
+          },
+          "::before, &::after":{
+            border:"none",
+          },
+          ".MuiSelect-standard":{
+            color:"common.white"
+          },
+          ".MuiSelect-icon":{
+            fill: theme.palette.common.white,
+          }
+        },
     }}
     variant='standard'
     labelId='selected-category'
@@ -74,13 +138,21 @@ function SearchBar(){
       </MenuItem>
       ))}
     </Select>
-      <Autocomplete
+      <StyleAutocomplete
+        freeSolo
+        id='selected-products'
+        value={selectedProduct}
+        onChange={(e, value)=>{
+          console.log(value);
+          handleSearchChange(value?.label);
+        }}
         disablePortal
-        id="combo-box-demo"
         options={Array.from(selectedCategory==="all"? products:products.filter(prod=> prod.category === selectedCategory), (prod) => ({ id:prod.id, label: prod.title }))}
-        sx={{ width: 300 }}
         renderInput={(params) => <TextField {...params} />}
       />
+      <SearchIconWrapper>
+        <SearchIcon/>
+      </SearchIconWrapper>
   </Search>
 }
 
