@@ -20,3 +20,6 @@ Currently, two official plugins are available:
 - useSelector is a another hook used in react redux
 - Reducers in redux only work with synchronus operations and the process of filling up the the product is an asynchronus operation so we use the concept of thunk.
 - .splice() method is a built-in method for JavaScript Array objects. It lets you change the content of your array by removing or replacing existing elements with new one.
+- In order to make the user management facility we use firebase such as we want to check if a person is buying the product now he is logged in or not.
+- 
+- 
